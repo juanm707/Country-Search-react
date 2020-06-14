@@ -19,6 +19,11 @@ function App() {
         }
     }
 
+    const handleClick = (event) => {
+        //console.log('handleClick', event.target.value);
+        setCountriesToDisplay(countries.filter(country => country.alpha3Code === event.target.value));
+    };
+
     const hook = () => {
         axios
             .get('https://restcountries.eu/rest/v2/all')
@@ -41,6 +46,7 @@ function App() {
                 />
                 <Matches
                     countries={countriesToDisplay}
+                    onClick={handleClick}
                 />
             </header>
         </div>

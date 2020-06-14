@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Matches = ({countries}) => {
+const Matches = ({countries, onClick}) => {
     if (countries.length === 0) {
         return <div><p>Search for countries</p></div>
     } else if (countries.length > 10){
@@ -25,8 +25,18 @@ const Matches = ({countries}) => {
             <div>
                 <h2>Matched Countries</h2>
                 {countries.map(country => {
-                    //console.log(country.alpha3Code);
-                    return <p key={country.alpha3Code}>{country.name}</p>
+                    //console.log(country);
+                    return (
+                        <div key={country.name}>
+                            <p key={country.alpha3Code}>{country.name}</p>
+                            <button
+                                key={country.alpha3Code + 'button'}
+                                onClick={onClick}
+                                value={country.alpha3Code}>
+                                show
+                            </button>
+                        </div>
+                    );
                 })}
             </div>
         );
