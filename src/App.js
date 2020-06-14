@@ -19,9 +19,14 @@ function App() {
         }
     }
 
-    const handleClick = (event) => {
+    const handleCountryButtonClick = (event) => {
         //console.log('handleClick', event.target.value);
         setCountriesToDisplay(countries.filter(country => country.alpha3Code === event.target.value));
+    };
+
+    const handleBackToMatchesButton = (event) => {
+        //console.log('back to matches')
+        setCountriesToDisplay(countries.filter(country => country.name.toUpperCase().includes(newCountrySearch.toUpperCase())));
     };
 
     const hook = () => {
@@ -46,7 +51,8 @@ function App() {
                 />
                 <Matches
                     countries={countriesToDisplay}
-                    onClick={handleClick}
+                    onClick={handleCountryButtonClick}
+                    onBack={handleBackToMatchesButton}
                 />
             </header>
         </div>

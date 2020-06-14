@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Matches = ({countries, onClick}) => {
+const Matches = ({countries, onClick, onBack}) => {
     if (countries.length === 0) {
         return <div><p>Search for countries</p></div>
     } else if (countries.length > 10){
@@ -12,6 +12,7 @@ const Matches = ({countries, onClick}) => {
 
         return (
           <div>
+              <button onClick={onBack}>Back to matches</button>
               <h1>{singleCountry.name} ({singleCountry.alpha3Code})</h1>
               <p>Capital: {singleCountry.capital}</p>
               <p>Population: {singleCountry.population}</p>
