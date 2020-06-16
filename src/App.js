@@ -34,9 +34,9 @@ function App() {
             .get('https://restcountries.eu/rest/v2/all')
             .then(response => {
                 const countries = response.data;
-                console.log(countries);
+                //console.log(countries);
                 setCountries(countries);
-                // setCountriesToDisplay(countries);
+                //setCountriesToDisplay(countries);
             });
     };
 
