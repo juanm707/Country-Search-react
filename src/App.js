@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import './App.css';
 import axios from 'axios';
 import CountrySearch from "./components/CountrySearch";
 import Matches from "./components/Matches";
+
 
 function App() {
 
@@ -20,12 +21,12 @@ function App() {
     }
 
     const handleCountryButtonClick = (event) => {
-        //console.log('handleClick', event.target.value);
+        console.log('handleClick', event.target.value);
         setCountriesToDisplay(countries.filter(country => country.alpha3Code === event.target.value));
     };
 
     const handleBackToMatchesButton = (event) => {
-        //console.log('back to matches')
+        console.log('back to matches')
         setCountriesToDisplay(countries.filter(country => country.name.toUpperCase().includes(newCountrySearch.toUpperCase())));
     };
 

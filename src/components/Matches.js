@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
+import MapView from "./MapView";
+import L from 'leaflet';
+import {Map, TileLayer, Marker, Popup} from 'react-leaflet';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
-
 
 const WeatherInfo = ({capital}) => {
 
@@ -12,21 +14,25 @@ const WeatherInfo = ({capital}) => {
                     "temperature": NaN,
                     "weather_icon": "",
                     "wind_speed": NaN,
-                    "wind_direction": ""
+                    "wind_direction": "",
+                    "coords": [],
             }
     );
 
     const url = `http://api.weatherstack.com/current?access_key=${API_KEY}&query=${capital}`;
     const hook = () => {
         axios.get(url).then(response => {
+            console.log("CHECK HERE", response.data);
+            console.log("Coords: ", [response.data.location.lat, response.data.location.lon])
             const weatherInfo = {
                     "observation_time": response.data.current.observation_time,
                     "temperature": response.data.current.temperature,
                     "weather_icon": response.data.current.weather_icons[0],
                     "wind_speed": response.data.current.wind_speed,
-                    "wind_direction": response.data.current.wind_dir
+                    "wind_direction": response.data.current.wind_dir,
+                    "coords": [response.data.location.lat, response.data.location.lon],
             }
-           setWeather(weatherInfo);
+            setWeather(weatherInfo);
         });
     }
 
@@ -39,6 +45,8 @@ const WeatherInfo = ({capital}) => {
             <p><strong>Temperature: </strong>{weather.temperature} celsius</p>
             <img src={weather.weather_icon} alt=""/>
             <p><strong>Wind: </strong>{weather.wind_speed} mph direction {weather.wind_direction}</p>
+            {console.log("coords in return", weather.coords.length)}
+            {weather.coords.length === 0 ? null : <MapView coords={weather.coords} />}
         </div>
     );
 }
@@ -50,6 +58,7 @@ const Matches = ({countries, onClick, onBack}) => {
     } else if (countries.length > 10){
         return <div><p>Too many matches, specify another filter</p></div>
     } else if (countries.length === 1) {
+
         const singleCountry = countries[0];
         const languages = singleCountry.languages;
 
