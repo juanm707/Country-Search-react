@@ -23,7 +23,7 @@ const MapView = ({coords, capital}) => {
 
     // '&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     // "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    var latlngs = [[38.566731101980785, -122.56506096183844], [38.56646685775345, -122.56524871646948],
+    var latlngs1 = [[38.566731101980785, -122.56506096183844], [38.56646685775345, -122.56524871646948],
         [38.56631586061583, -122.56515752136298],
         [38.566177446294304, -122.56500195324011],
         [38.56606419801475, -122.56515752136298],
@@ -35,6 +35,36 @@ const MapView = ({coords, capital}) => {
         [38.565862867299316, -122.56418656169959],
         [38.56620261255444, -122.56392906963416]];
 
+    var latlngs2 = [
+        [38.56616368514933, -122.56655962177358],
+        [38.565972840686776, -122.56670446106038],
+        [38.56586588367847, -122.56675005861364],
+        [38.565767315314154, -122.56679297395787],
+        [38.56566245520367, -122.56680370279393],
+        [38.565591150241175, -122.56679297395787],
+        [38.565450637313866, -122.56675005861364],
+        [38.56534787395425, -122.56669909664235],
+        [38.56527027703432, -122.56660521932683],
+        [38.56525349931088, -122.5665086598023],
+        [38.56526817981911, -122.56637723156057],
+        [38.5652912491831, -122.56634236284337],
+        [38.565303832469446, -122.56625116773687],
+        [38.565320610181104, -122.56612510391317],
+        [38.565312221325776, -122.56600976892553],
+        [38.56529544361213, -122.56589175172887],
+        [38.56529334639765, -122.56583274313054],
+        [38.56538981820042, -122.56574959465108],
+        [38.56564777477603, -122.56558061548314],
+        [38.565864835079566, -122.56540895410619],
+        [38.56592670238901, -122.56552697130284],
+        [38.56575053770677, -122.565691256605],
+        [38.56564253176542, -122.56576317333422],
+        [38.56569391325291, -122.56586727657161],
+        [38.56578828731791, -122.56595746584973],
+        [38.56601478456817, -122.5662028879746],
+        [38.56606092280938, -122.56630481191716],
+        [38.56610706102099, -122.56641746469579]];
+
     // polygon -> onClick, onDblClick, onContextMenu, onMouseOut,
     const setBlockInfo = (info) => {
         // info is block object
@@ -42,6 +72,7 @@ const MapView = ({coords, capital}) => {
         // var pElem = document.getElementById('block-info').innerHTML = 'Block: 6P<br/>Variety: ME #3<br/>' +
         //     'Rootstock: 3309<br/>Spacing: 4\'x7\'<br/>Acres: 83<br/>Vines: 1,292<br/>Rows: 12-23';
         var tElem = document.getElementById('block-info');
+        tElem.innerHTML = ""; // remove any old block info
         const blockKeys = Object.keys(info);
         const blockVals = Object.values(info)
         const blockPropLength = blockKeys.length;
@@ -55,7 +86,7 @@ const MapView = ({coords, capital}) => {
         //console.log(pElem);
     }
 
-    const blockInfo = {
+    const blockInfo1 = {
         block: '6P',
         variety: 'ME #3',
         rootstock: '3309',
@@ -63,6 +94,16 @@ const MapView = ({coords, capital}) => {
         acres: '83',
         vines: '1,292',
         rows: '12-23',
+    }
+
+    const blockInfo2 = {
+        block: '7P',
+        variety: 'ME #4',
+        rootstock: '3309',
+        spacing: '4\'x7\'',
+        acres: '25',
+        vines: '292',
+        rows: '1-30',
     }
 
     return (
@@ -77,11 +118,18 @@ const MapView = ({coords, capital}) => {
                     url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png'
                 />
                 <Polygon
-                    positions={latlngs}
+                    positions={latlngs1}
                     interactive='true'
                     color='orange'
                     fillColor='white'
-                    onClick={() => setBlockInfo(blockInfo)}
+                    onClick={() => setBlockInfo(blockInfo1)}
+                />
+                <Polygon
+                    positions={latlngs2}
+                    interactive='true'
+                    color='orange'
+                    fillColor='white'
+                    onClick={() => setBlockInfo(blockInfo2)}
                 />
                 <Marker position={position} icon={myIcon}>
                     <Popup>
