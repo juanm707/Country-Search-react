@@ -55,6 +55,7 @@ function App() {
                     onClick={handleCountryButtonClick}
                     onBack={handleBackToMatchesButton}
                 />
+                <br/>
             </header>
         </div>
     );

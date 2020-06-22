@@ -46,7 +46,7 @@ const WeatherInfo = ({capital}) => {
             <img src={weather.weather_icon} alt=""/>
             <p><strong>Wind: </strong>{weather.wind_speed} mph direction {weather.wind_direction}</p>
             {console.log("coords in return", weather.coords.length)}
-            {weather.coords.length === 0 ? null : <MapView coords={weather.coords} />}
+            {weather.coords.length === 0 ? null : <MapView coords={weather.coords} capital={capital}/>}
         </div>
     );
 }

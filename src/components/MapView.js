@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import L from 'leaflet';
-import {Map, TileLayer, Marker, Popup} from 'react-leaflet';
+import {Map, TileLayer, Marker, Popup, Polygon} from 'react-leaflet';
 
-const MapView = ({coords}) => {
+const MapView = ({coords, capital}) => {
 
-    console.log(coords);
     const state = {
         lat: coords[0],
         lng: coords[1],
@@ -19,21 +18,83 @@ const MapView = ({coords}) => {
         iconAnchor: [12.5, 41],
         popupAnchor: [0, -41]
     });
+    // 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    // 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+
+    // '&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    // "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    var latlngs = [[38.566731101980785, -122.56506096183844], [38.56646685775345, -122.56524871646948],
+        [38.56631586061583, -122.56515752136298],
+        [38.566177446294304, -122.56500195324011],
+        [38.56606419801475, -122.56515752136298],
+        [38.56565734161215, -122.56546329319067],
+        [38.56522426770422, -122.56577577054091],
+        [38.56510525056776, -122.56551626681872],
+        [38.564990427681025, -122.56524066984244],
+        [38.565556675755005, -122.56454061328955],
+        [38.565862867299316, -122.56418656169959],
+        [38.56620261255444, -122.56392906963416]];
+
+    // polygon -> onClick, onDblClick, onContextMenu, onMouseOut,
+    const setBlockInfo = (info) => {
+        // info is block object
+        console.log('polygon clicked!!')
+        // var pElem = document.getElementById('block-info').innerHTML = 'Block: 6P<br/>Variety: ME #3<br/>' +
+        //     'Rootstock: 3309<br/>Spacing: 4\'x7\'<br/>Acres: 83<br/>Vines: 1,292<br/>Rows: 12-23';
+        var tElem = document.getElementById('block-info');
+        const blockKeys = Object.keys(info);
+        const blockVals = Object.values(info)
+        const blockPropLength = blockKeys.length;
+
+        for (var i = 0; i < blockPropLength; i++) {
+            var row = tElem.insertRow(i);
+            var prop = row.insertCell(0).innerHTML = blockKeys[i].toUpperCase().fontcolor('orange');
+            var val = row.insertCell(1).innerHTML = blockVals[i];
+        }
+
+        //console.log(pElem);
+    }
+
+    const blockInfo = {
+        block: '6P',
+        variety: 'ME #3',
+        rootstock: '3309',
+        spacing: '4\'x7\'',
+        acres: '83',
+        vines: '1,292',
+        rows: '12-23',
+    }
 
     return (
         <div>
             <Map className='map' center={position} zoom={state.zoom}>
                 <TileLayer
-                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                    url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                />
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                    url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png'
+                />
+                <Polygon
+                    positions={latlngs}
+                    interactive='true'
+                    color='orange'
+                    fillColor='white'
+                    onClick={() => setBlockInfo(blockInfo)}
                 />
                 <Marker position={position} icon={myIcon}>
                     <Popup>
-                        A pretty CSS3 popup. <br /> Easily customizable.
+                        Capital: {capital}
                     </Popup>
                 </Marker>
             </Map>
-            <br/>
+            <div>
+                <p><strong>BLOCK INFO</strong></p>
+                <div style={{float:'right',width:'30%'}}>
+                    <table id='block-info' style={{marginLeft: '20%', marginRight: '20%'}}></table>
+                </div>
+            </div>
         </div>
     );
 }
