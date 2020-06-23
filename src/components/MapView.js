@@ -4,6 +4,8 @@ import {Map, TileLayer, Marker, Popup, Polygon} from 'react-leaflet';
 
 const MapView = ({coords, capital}) => {
 
+    const [colors, setColors] = useState(Array(3).fill('orange'));
+
     const state = {
         lat: coords[0],
         lng: coords[1],
@@ -65,12 +67,35 @@ const MapView = ({coords, capital}) => {
         [38.56606092280938, -122.56630481191716],
         [38.56610706102099, -122.56641746469579]];
 
+    var latlngs3 =
+        [[38.56825551847066, -122.5664297203122],
+        [38.56815066199109, -122.56669257679566],
+        [38.567961919942285, -122.56655310192689],
+        [38.56781931450993, -122.56684814491852],
+        [38.56678751383241, -122.56598447361573],
+        [38.56698045329666, -122.56548558273896]];
+
     // polygon -> onClick, onDblClick, onContextMenu, onMouseOut,
-    const setBlockInfo = (info) => {
-        // info is block object
+    const setBlockInfo = (info, idx) => {
+
+        if (colors[idx] === 'orange') {
+            // set the blue ones to orange
+            var newColors = colors.map((c, i) => {
+                if (c === 'blue' && idx !== i) {
+                    return 'orange';
+                }
+                else if (c === 'orange' && idx === i) {
+                    return 'blue';
+                }
+                else {
+                    return 'orange';
+                }
+            });
+
+            setColors(newColors);
+        }
+
         console.log('polygon clicked!!')
-        // var pElem = document.getElementById('block-info').innerHTML = 'Block: 6P<br/>Variety: ME #3<br/>' +
-        //     'Rootstock: 3309<br/>Spacing: 4\'x7\'<br/>Acres: 83<br/>Vines: 1,292<br/>Rows: 12-23';
         var tElem = document.getElementById('block-info');
         tElem.innerHTML = ""; // remove any old block info
         const blockKeys = Object.keys(info);
@@ -82,8 +107,6 @@ const MapView = ({coords, capital}) => {
             var prop = row.insertCell(0).innerHTML = blockKeys[i].toUpperCase().fontcolor('orange');
             var val = row.insertCell(1).innerHTML = blockVals[i];
         }
-
-        //console.log(pElem);
     }
 
     const blockInfo1 = {
@@ -120,16 +143,23 @@ const MapView = ({coords, capital}) => {
                 <Polygon
                     positions={latlngs1}
                     interactive='true'
-                    color='orange'
-                    fillColor='white'
-                    onClick={() => setBlockInfo(blockInfo1)}
+                    color={colors[0]}
+                    fillColor={colors[0]}
+                    onClick={() => setBlockInfo(blockInfo1, 0)}
                 />
                 <Polygon
                     positions={latlngs2}
                     interactive='true'
-                    color='orange'
-                    fillColor='white'
-                    onClick={() => setBlockInfo(blockInfo2)}
+                    color={colors[1]}
+                    fillColor={colors[1]}
+                    onClick={() => setBlockInfo(blockInfo2, 1)}
+                />
+                <Polygon
+                    positions={latlngs3}
+                    interactive='true'
+                    color={colors[2]}
+                    fillColor={colors[2]}
+                    onClick={() => setBlockInfo(blockInfo2, 2)}
                 />
                 <Marker position={position} icon={myIcon}>
                     <Popup>
@@ -137,10 +167,10 @@ const MapView = ({coords, capital}) => {
                     </Popup>
                 </Marker>
             </Map>
-            <div>
-                <p><strong>BLOCK INFO</strong></p>
-                <div style={{float:'right',width:'30%'}}>
-                    <table id='block-info' style={{marginLeft: '20%', marginRight: '20%'}}></table>
+            <div className='block-holder'>
+                <p style={{textAlign: 'center'}}><strong>BLOCK INFO</strong></p>
+                <div>
+                    <table id='block-info' style={{margin: 'auto'}}></table>
                 </div>
             </div>
         </div>
