@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import MapView from "./MapView";
-import L from 'leaflet';
-import {Map, TileLayer, Marker, Popup} from 'react-leaflet';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 const WeatherInfo = ({capital}) => {
+
+    if (capital === 'Washington, D.C.') { // if we query for washington dc we get washington, aruba... ???
+        capital = 'Washington';
+    }
 
     const [weather, setWeather] = useState(
         {
